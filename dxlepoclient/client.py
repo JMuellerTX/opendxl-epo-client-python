@@ -157,6 +157,19 @@ class EpoClient(Client):
 
         self._epo_unique_id = epo_unique_id
 
+    @staticmethod
+    def _validate_command_name(command_name):
+        """
+        Validates that the specified command name does not contain MQTT topic
+        wildcards, path separators, or null bytes.
+
+        :param command_name: The command name
+        """
+        if not command_name or not isinstance(command_name, str) or \
+                any(ch in command_name for ch in ("#", "+", "/", "\0")):
+            raise ValueError(
+                "Invalid command name: {0}".format(command_name))
+
     def run_command(self, command_name, params=None,
                     output_format=OutputFormat.JSON):
         """
@@ -209,6 +222,7 @@ class EpoClient(Client):
             than :const:`OutputFormat.JSON` is specified.
         :return: The result of the remote command execution
         """
+        self._validate_command_name(command_name)
         OutputFormat.validate(output_format)
         if params is None:
             params = {}
@@ -297,6 +311,7 @@ class EpoClient(Client):
         :return: A DXL Response object containing the result of the remote
             command execution
         """
+        self._validate_command_name(command_name)
         if output_format != OutputFormat.JSON:
             raise Exception(
                 "Invalid output format: " + output_format +

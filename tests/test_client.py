@@ -182,3 +182,12 @@ class TestClient(BaseClientTest):
                         res_list = MessageUtils.json_to_dict(res)
 
                         self.assertEqual(res_list, SYSTEM_FIND_PAYLOAD)
+
+    def test_run_command_rejects_invalid_command_name(self):
+        client = EpoClient.__new__(EpoClient)
+        client._use_epo_commands_service = True
+        client._epo_unique_id = "epo1"
+        for bad_cmd in ("", "system/find", "system.#", "system.+", "system.find\0"):
+            with self.assertRaises(ValueError):
+                client.run_command(bad_cmd)
+
