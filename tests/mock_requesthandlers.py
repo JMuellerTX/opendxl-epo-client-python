@@ -104,6 +104,17 @@ class FakeEpoServerCallback(RequestCallback):
             elif command == SYSTEM_FIND_CMD_NAME:
                 self.system_find_command(request, params)
 
+            # List Queries command
+            elif command == LIST_QUERIES_CMD_NAME:
+                self.json_command(request, LIST_QUERIES_PAYLOAD)
+
+            # Execute Query command
+            elif command == EXECUTE_QUERY_CMD_NAME:
+                self.json_command(
+                    request,
+                    EXECUTE_QUERY_PAYLOAD
+                    if params == {"queryId": QUERY_ID} else [])
+
             # Unknown Command
             else:
                 self.unknown_command(request, command)
@@ -144,6 +155,11 @@ class FakeEpoServerCallback(RequestCallback):
             if params == {"searchText": SYSTEM_FIND_OSTYPE_LINUX}
             else [])
 
+        self._client.send_response(response)
+
+    def json_command(self, request, payload):
+        response = Response(request)
+        response.payload = MessageUtils.dict_to_json(payload)
         self._client.send_response(response)
 
     def unknown_command(self, request, command):

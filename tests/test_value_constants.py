@@ -14,6 +14,14 @@ HELP_CMD_RESPONSE_PAYLOAD = os.linesep.join([
 
 SYSTEM_FIND_CMD_NAME = "system.find"
 
+LIST_QUERIES_CMD_NAME = "core.listQueries"
+EXECUTE_QUERY_CMD_NAME = "core.executeQuery"
+QUERY_NAME = "My Query"
+QUERY_ID = 42
+LIST_QUERIES_PAYLOAD = [{"id": 7, "name": "Other Query"},
+                        {"id": QUERY_ID, "name": QUERY_NAME}]
+EXECUTE_QUERY_PAYLOAD = [{"EPOLeafNode.NodeName": "host1"}]
+
 SYSTEM_FIND_OSTYPE_LINUX = "Linux"
 
 SYSTEM_FIND_PAYLOAD = [
