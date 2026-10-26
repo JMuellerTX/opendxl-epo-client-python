@@ -50,3 +50,4 @@ Basic
 
 	basiccorehelpexample
 	basicsystemfindexample
+	basicrunqueryexample
